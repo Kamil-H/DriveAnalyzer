@@ -1,14 +1,15 @@
-package kamilhalko.com.driveanalyzer;
+package kamilhalko.com.driveanalyzer.views.activities;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import kamilhalko.com.driveanalyzer.R;
 import kamilhalko.com.driveanalyzer.databinding.ActivityMainBinding;
+import kamilhalko.com.driveanalyzer.views.BaseActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private ActivityMainBinding binding;
 
     @Override
