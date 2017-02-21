@@ -7,15 +7,20 @@ import android.view.MenuItem;
 
 import kamilhalko.com.driveanalyzer.R;
 import kamilhalko.com.driveanalyzer.databinding.ActivityMainBinding;
+import kamilhalko.com.driveanalyzer.dependency_injection.Injector;
+import kamilhalko.com.driveanalyzer.presenters.activities.MainPresenter;
 import kamilhalko.com.driveanalyzer.views.BaseActivity;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements MainView {
+    private MainPresenter mainPresenter;
     private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        mainPresenter = Injector.injectPresenter(this);
 
         setUpToolbar();
     }
