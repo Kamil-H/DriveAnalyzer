@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -47,5 +48,22 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT);
         snackbar.setAction(buttonMessage, onClickListener);
         snackbar.show();
+    }
+
+    private Fragment createFragmentInstance(Class fragmentClass){
+        Fragment fragment = null;
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fragment;
+    }
+
+    protected void displayFragment(Class fragmentClass, int containerId) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(containerId, createFragmentInstance(fragmentClass), fragmentClass.getName())
+                .commitAllowingStateLoss();
     }
 }
