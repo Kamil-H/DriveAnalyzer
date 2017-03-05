@@ -2,19 +2,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="kamilhalko.com.driveanalyzer">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-feature android:name="android.hardware.location.gps" />
+
     <application
         android:name=".DriveAnalyzerApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:screenOrientation="portrait">
         <activity android:name=".views.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <service android:name=".services.DriveAnalyzeService"/>
     </application>
 
 </manifest>

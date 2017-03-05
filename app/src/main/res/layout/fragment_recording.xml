@@ -1,14 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-    <LinearLayout
+    <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/bottom_recording"/>
-    </LinearLayout>
+            android:orientation="vertical"
+            android:gravity="center"
+            android:id="@+id/startLinearLayout">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/RecordingFragment_start_button"
+                android:textSize="18sp"
+                android:textColor="@color/orange"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/startButton"
+                style="?android:attr/borderlessButtonStyle"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:id="@+id/recordingLinearLayout"
+            android:visibility="gone">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/RecordingFragment_stop_button"
+                android:textSize="18sp"
+                android:textColor="@color/orange"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/stopButton"
+                style="?android:attr/borderlessButtonStyle"/>
+        </LinearLayout>
+    </RelativeLayout>
 </layout>
 

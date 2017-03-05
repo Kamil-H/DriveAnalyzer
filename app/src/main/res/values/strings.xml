@@ -3,4 +3,11 @@
     <string name="bottom_recording">Recording</string>
     <string name="bottom_history">History</string>
     <string name="bottom_settings">Settings</string>
+    <string name="RecordingFragment_start_button">Click and start analyze</string>
+    <string name="RecordingFragment_stop_button">click and stop analyze</string>
+    <string name="RecordingFragment_gps_disabled">GPS has been disabled</string>
+    <string name="MainActivity_gps_permission_needed">Application needs GPS to work</string>
+    <string name="MainActivity_allow">allow</string>
+    <string name="MainActivity_gps_needed">Application needs GPS to work</string>
+    <string name="MainActivity_enable">enable</string>
 </resources>

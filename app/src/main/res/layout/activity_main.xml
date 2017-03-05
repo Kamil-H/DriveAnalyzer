@@ -28,13 +28,13 @@
             app:itemTextColor="@drawable/selector_bottom"
             app:menu="@menu/menu_bottom_navigation" />
 
-        <FrameLayout
+        <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/container"
             android:layout_below="@id/appbar"
             android:layout_above="@id/bottom_navigation"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        </FrameLayout>
+        </android.support.design.widget.CoordinatorLayout>
     </RelativeLayout>
 </layout>

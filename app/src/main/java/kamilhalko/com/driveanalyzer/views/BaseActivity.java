@@ -9,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import kamilhalko.com.driveanalyzer.R;
+
 public abstract class BaseActivity extends AppCompatActivity implements MvpView {
     private ProgressDialog progressDialog;
 
@@ -39,13 +41,13 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
 
     @Override
     public void onError(String message) {
-        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT);
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.container), message, Snackbar.LENGTH_LONG);
         snackbar.show();
     }
 
     @Override
     public void onError(String message, String buttonMessage, View.OnClickListener onClickListener) {
-        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT);
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.container), message, Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction(buttonMessage, onClickListener);
         snackbar.show();
     }
