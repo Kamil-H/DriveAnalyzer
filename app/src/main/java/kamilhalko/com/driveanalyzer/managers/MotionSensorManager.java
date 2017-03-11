@@ -5,9 +5,15 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
+import kamilhalko.com.driveanalyzer.data.models.sensors.Accelerometer;
+import kamilhalko.com.driveanalyzer.data.models.sensors.Gyroscope;
+import kamilhalko.com.driveanalyzer.data.models.sensors.MagneticField;
+
 public class MotionSensorManager implements SensorEventListener {
     private SensorManager sensorManager;
-    private float accelerometer = 0, gyroscope = 0, magneticField = 0;
+    private Accelerometer accelerometer;
+    private Gyroscope gyroscope;
+    private MagneticField magneticField;
 
     public MotionSensorManager(SensorManager sensorManager) {
         this.sensorManager = sensorManager;
@@ -37,14 +43,13 @@ public class MotionSensorManager implements SensorEventListener {
         float x = values[0];
         float y = values[1];
         float z = values[2];
-        float value = (float) Math.sqrt(x*x + y*y + z*z);
 
         if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            accelerometer = value;
+            accelerometer = new Accelerometer(x, y, z);
         } else if (sensorEvent.sensor.getType() == Sensor.TYPE_GYROSCOPE){
-            gyroscope = value;
+            gyroscope = new Gyroscope(x, y, z);
         } else if (sensorEvent.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD){
-            magneticField = value;
+            magneticField = new MagneticField(x, y, z);
         }
     }
 
@@ -55,15 +60,15 @@ public class MotionSensorManager implements SensorEventListener {
         sensorManager.unregisterListener(this);
     }
 
-    public float getAccelerometer() {
+    public Accelerometer getAccelerometer() {
         return accelerometer;
     }
 
-    public float getGyroscope() {
+    public Gyroscope getGyroscope() {
         return gyroscope;
     }
 
-    public float getMagneticField() {
+    public MagneticField getMagneticField() {
         return magneticField;
     }
 }

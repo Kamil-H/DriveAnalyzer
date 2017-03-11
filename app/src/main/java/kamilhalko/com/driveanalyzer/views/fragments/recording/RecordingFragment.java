@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.google.gson.Gson;
 
 import kamilhalko.com.driveanalyzer.R;
-import kamilhalko.com.driveanalyzer.data.models.SensorData;
+import kamilhalko.com.driveanalyzer.data.models.Trip;
 import kamilhalko.com.driveanalyzer.databinding.FragmentRecordingBinding;
 import kamilhalko.com.driveanalyzer.dependency_injection.Injector;
 import kamilhalko.com.driveanalyzer.presenters.fragments.RecordingPresenter;
@@ -91,11 +91,11 @@ public class RecordingFragment extends BaseFragment implements RecordingView {
     }
 
     @Override
-    public void updateData(SensorData sensorData) {
+    public void updateData(Trip trip) {
         if (!binding.recordingLinearLayout.isShown()) {
             showRecordingLayout();
         }
-        Log.i("RecordingFragment", new Gson().toJson(sensorData));
+        Log.i("RecordingFragment", new Gson().toJson(trip));
     }
 
     @Override

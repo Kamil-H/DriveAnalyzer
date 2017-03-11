@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +14,9 @@ import java.util.List;
 import io.reactivex.subjects.PublishSubject;
 import kamilhalko.com.driveanalyzer.data.DataManager;
 import kamilhalko.com.driveanalyzer.data.DataManagerImpl;
+import kamilhalko.com.driveanalyzer.data.models.sensors.Gps;
 import kamilhalko.com.driveanalyzer.data.models.SensorData;
-import kamilhalko.com.driveanalyzer.data.models.factories.SensorDataFactory;
+import kamilhalko.com.driveanalyzer.data.models.Trip;
 import kamilhalko.com.driveanalyzer.dependency_injection.Injector;
 import kamilhalko.com.driveanalyzer.managers.GpsManager;
 import kamilhalko.com.driveanalyzer.managers.MotionSensorManager;
@@ -24,6 +26,7 @@ public class DriveAnalyzeService extends Service implements GpsManager.GpsLocati
     private MotionSensorManager motionSensorManager;
     private GpsManager gpsManager;
     private List<SensorData> sensorDataList = new ArrayList<>();
+    private Trip trip;
     private DataManager dataManager;
 
     public static void startService(Context context) {
@@ -44,6 +47,8 @@ public class DriveAnalyzeService extends Service implements GpsManager.GpsLocati
         configureMotionSensorManager();
         configureGpsManager();
         dataManager = DataManagerImpl.getInstance();
+        trip = new Trip();
+        dataManager.getPublishSubject().onNext(trip);
     }
 
     @Override
@@ -68,9 +73,15 @@ public class DriveAnalyzeService extends Service implements GpsManager.GpsLocati
 
     @Override
     public void onLocationChanged(Location location) {
-        SensorData sensorData = SensorDataFactory.create(location, motionSensorManager);
+        SensorData sensorData = new SensorData.Builder()
+                .setAccelerometer(motionSensorManager.getAccelerometer())
+                .setGyroscope(motionSensorManager.getGyroscope())
+                .setMagneticField(motionSensorManager.getMagneticField())
+                .setGps(new Gps(location))
+                .build();
         sensorDataList.add(sensorData);
-        notifyData(sensorData);
+        trip.setSensorDataList(sensorDataList);
+        notifyData(trip);
     }
 
     @Override
@@ -78,17 +89,17 @@ public class DriveAnalyzeService extends Service implements GpsManager.GpsLocati
         stopService(this);
     }
 
-    private void notifyData(SensorData sensorData) {
-        dataManager.setSensorDataList(sensorDataList);
-        dataManager.getPublishSubject().onNext(sensorData);
+    private void notifyData(Trip trip) {
+        Log.i("Service", "notify");
+        dataManager.getPublishSubject().onNext(trip);
     }
 
     private void finish() {
         motionSensorManager.removeUpdates();
         gpsManager.removeUpdates();
-        dataManager.setSensorDataList(null);
+        dataManager.setTrip(null);
         dataManager.getPublishSubject().onComplete();
-        dataManager.setPublishSubject(PublishSubject.<SensorData>create());
+        dataManager.setPublishSubject(PublishSubject.<Trip>create());
         saveData();
     }
 

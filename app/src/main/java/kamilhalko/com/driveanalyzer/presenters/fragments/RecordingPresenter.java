@@ -1,18 +1,15 @@
 package kamilhalko.com.driveanalyzer.presenters.fragments;
 
-import java.util.List;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import kamilhalko.com.driveanalyzer.data.DataManager;
-import kamilhalko.com.driveanalyzer.data.models.SensorData;
+import kamilhalko.com.driveanalyzer.data.models.Trip;
 import kamilhalko.com.driveanalyzer.presenters.BasePresenter;
 import kamilhalko.com.driveanalyzer.views.fragments.recording.RecordingView;
 
 public class RecordingPresenter<V extends RecordingView> extends BasePresenter<V> {
-    private List<SensorData> sensorDataList;
 
     public RecordingPresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
         super(dataManager, compositeDisposable);
@@ -29,20 +26,18 @@ public class RecordingPresenter<V extends RecordingView> extends BasePresenter<V
                         getMvpView().onRecordingFinished();
                     }
                 })
-                .subscribe(new Consumer<SensorData>() {
+                .subscribe(new Consumer<Trip>() {
                     @Override
-                    public void accept(SensorData sensorData) throws Exception {
-                        if (sensorDataList != null) {
-                            sensorDataList.add(sensorData);
+                    public void accept(Trip trip) throws Exception {
+                        if (trip.getSensorDataList() != null) {
+                            getMvpView().updateData(trip);
                         }
-                        getMvpView().updateData(sensorData);
                     }
                 }));
     }
 
     private void getSensorDataList() {
-        if (getDataManager().getSensorDataList() != null) {
-            sensorDataList = getDataManager().getSensorDataList();
+        if (getDataManager().getTrip() != null) {
             getMvpView().showRecordingLayout();
         }
     }
