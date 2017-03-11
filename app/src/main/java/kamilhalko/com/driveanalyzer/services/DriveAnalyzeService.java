@@ -7,8 +7,6 @@ import android.location.Location;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +16,6 @@ import kamilhalko.com.driveanalyzer.data.DataManagerImpl;
 import kamilhalko.com.driveanalyzer.data.models.SensorData;
 import kamilhalko.com.driveanalyzer.data.models.factories.SensorDataFactory;
 import kamilhalko.com.driveanalyzer.dependency_injection.Injector;
-import kamilhalko.com.driveanalyzer.managers.FileManager;
 import kamilhalko.com.driveanalyzer.managers.GpsManager;
 import kamilhalko.com.driveanalyzer.managers.MotionSensorManager;
 import kamilhalko.com.driveanalyzer.utils.ServiceUtil;
@@ -96,7 +93,7 @@ public class DriveAnalyzeService extends Service implements GpsManager.GpsLocati
     }
 
     private void saveData() {
-        FileManager.saveToFile(this, new Gson().toJson(sensorDataList));
+
     }
 
     @Nullable
