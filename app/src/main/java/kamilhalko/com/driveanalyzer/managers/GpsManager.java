@@ -17,8 +17,8 @@ public class GpsManager implements LocationListener {
     }
 
     public void requestLocations() {
-        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-        test();
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        //test();
     }
 
     private void test() {

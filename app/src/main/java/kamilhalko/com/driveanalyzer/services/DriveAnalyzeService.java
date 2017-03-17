@@ -1,33 +1,32 @@
 package kamilhalko.com.driveanalyzer.services;
 
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.subjects.PublishSubject;
 import kamilhalko.com.driveanalyzer.data.DataManager;
-import kamilhalko.com.driveanalyzer.data.DataManagerImpl;
-import kamilhalko.com.driveanalyzer.data.models.sensors.Gps;
 import kamilhalko.com.driveanalyzer.data.models.SensorData;
 import kamilhalko.com.driveanalyzer.data.models.Trip;
-import kamilhalko.com.driveanalyzer.dependency_injection.Injector;
+import kamilhalko.com.driveanalyzer.data.models.sensors.Gps;
 import kamilhalko.com.driveanalyzer.managers.GpsManager;
 import kamilhalko.com.driveanalyzer.managers.MotionSensorManager;
 import kamilhalko.com.driveanalyzer.utils.ServiceUtil;
 
-public class DriveAnalyzeService extends Service implements GpsManager.GpsLocationListener {
-    private MotionSensorManager motionSensorManager;
-    private GpsManager gpsManager;
+public class DriveAnalyzeService extends BaseService implements GpsManager.GpsLocationListener {
+    @Inject DataManager dataManager;
+    @Inject MotionSensorManager motionSensorManager;
+    @Inject GpsManager gpsManager;
+
     private List<SensorData> sensorDataList = new ArrayList<>();
     private Trip trip;
-    private DataManager dataManager;
 
     public static void startService(Context context) {
         context.startService(new Intent(context, DriveAnalyzeService.class));
@@ -44,9 +43,9 @@ public class DriveAnalyzeService extends Service implements GpsManager.GpsLocati
     @Override
     public void onCreate() {
         super.onCreate();
+        getServiceComponent().inject(this);
         configureMotionSensorManager();
         configureGpsManager();
-        dataManager = DataManagerImpl.getInstance();
         trip = new Trip();
         dataManager.getPublishSubject().onNext(trip);
     }
@@ -58,7 +57,6 @@ public class DriveAnalyzeService extends Service implements GpsManager.GpsLocati
     }
 
     private void configureMotionSensorManager() {
-        motionSensorManager = Injector.injectMotionSensorManager(this);
         motionSensorManager
                 .addUpdatesForGyroscopeSensor()
                 .addUpdatesForMagneticFieldSensor()
@@ -66,7 +64,6 @@ public class DriveAnalyzeService extends Service implements GpsManager.GpsLocati
     }
 
     private void configureGpsManager() {
-        gpsManager = Injector.injectGpsManager(this);
         gpsManager.requestLocations();
         gpsManager.setGpsLocationListener(this);
     }
@@ -90,7 +87,6 @@ public class DriveAnalyzeService extends Service implements GpsManager.GpsLocati
     }
 
     private void notifyData(Trip trip) {
-        Log.i("Service", "notify");
         dataManager.getPublishSubject().onNext(trip);
     }
 

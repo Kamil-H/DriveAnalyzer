@@ -2,23 +2,30 @@ package kamilhalko.com.driveanalyzer.data;
 
 import android.content.Context;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
+import kamilhalko.com.driveanalyzer.data.database.DbHelper;
 import kamilhalko.com.driveanalyzer.data.models.Trip;
 import kamilhalko.com.driveanalyzer.data.network.NetworkHelper;
-import kamilhalko.com.driveanalyzer.data.network.NetworkHelperImpl;
 
+@Singleton
 public class DataManagerImpl implements DataManager {
-    private static DataManagerImpl instance = new DataManagerImpl();
     private PublishSubject<Trip> publishSubject = PublishSubject.create();
     private Trip trip;
-    private NetworkHelper networkHelper = NetworkHelperImpl.getInstance();
 
-    public static DataManagerImpl getInstance() {
-        return instance;
+    private final Context context;
+    private final DbHelper dbHelper;
+    private final NetworkHelper networkHelper;
+
+    @Inject
+    public DataManagerImpl(Context context, DbHelper dbHelper, NetworkHelper networkHelper) {
+        this.context = context;
+        this.dbHelper = dbHelper;
+        this.networkHelper = networkHelper;
     }
-
-    private DataManagerImpl() {}
 
     @Override
     public PublishSubject<Trip> getPublishSubject() {
@@ -41,7 +48,7 @@ public class DataManagerImpl implements DataManager {
     }
 
     @Override
-    public Observable<Long> synchronize(Context context, Trip trip) {
-        return networkHelper.synchronize(context, trip);
+    public Observable<Long> synchronize(Trip trip) {
+        return networkHelper.synchronize(trip);
     }
 }

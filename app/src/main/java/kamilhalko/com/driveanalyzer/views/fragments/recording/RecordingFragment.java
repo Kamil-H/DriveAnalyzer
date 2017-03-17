@@ -9,18 +9,19 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 
+import javax.inject.Inject;
+
 import kamilhalko.com.driveanalyzer.R;
 import kamilhalko.com.driveanalyzer.data.models.Trip;
 import kamilhalko.com.driveanalyzer.databinding.FragmentRecordingBinding;
-import kamilhalko.com.driveanalyzer.dependency_injection.Injector;
 import kamilhalko.com.driveanalyzer.presenters.fragments.RecordingPresenter;
 import kamilhalko.com.driveanalyzer.utils.GpsUtils;
 import kamilhalko.com.driveanalyzer.views.BaseFragment;
 
 public class RecordingFragment extends BaseFragment implements RecordingView {
+    @Inject RecordingPresenter<RecordingFragment> recordingPresenter;
     private FragmentRecordingBinding binding;
     private RecordingFragmentCallbacks callback;
-    private RecordingPresenter recordingPresenter;
 
     @Override
     public void onAttach(Context context) {
@@ -37,7 +38,7 @@ public class RecordingFragment extends BaseFragment implements RecordingView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentRecordingBinding.inflate(inflater, container, false);
-        recordingPresenter = Injector.injectPresenter(this);
+        getActivityComponent().inject(this);
         setUpView();
         return binding.getRoot();
     }

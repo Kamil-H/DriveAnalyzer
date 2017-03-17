@@ -8,6 +8,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.concurrent.Callable;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import io.reactivex.Observable;
 import kamilhalko.com.driveanalyzer.data.models.Trip;
 import okhttp3.MediaType;
@@ -17,22 +20,22 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+@Singleton
 public class NetworkHelperImpl implements NetworkHelper {
-    private static NetworkHelperImpl instance = new NetworkHelperImpl();
     private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
+    private Context context;
 
-    public static NetworkHelperImpl getInstance() {
-        return instance;
+    @Inject
+    public NetworkHelperImpl(Context context) {
+        this.context = context;
     }
 
-    private NetworkHelperImpl() {}
-
     @Override
-    public Observable<Long> synchronize(final Context context, final Trip trip) {
+    public Observable<Long> synchronize(final Trip trip) {
         return Observable.fromCallable(new Callable<Long>() {
             @Override
             public Long call() throws Exception {
-                File file = createFile(context, trip);
+                File file = createFile(trip);
                 OkHttpClient client = new OkHttpClient();
                 RequestBody requestBody = new MultipartBody.Builder()
                         .setType(MultipartBody.FORM)
@@ -56,7 +59,7 @@ public class NetworkHelperImpl implements NetworkHelper {
         });
     }
 
-    private File createFile(Context context, Trip trip) {
+    private File createFile(Trip trip) {
         File file = new File(context.getFilesDir(), String.format("%s_%s.json", trip.getDeviceId(), trip.getTime().toDateTimeISO()));
         FileOutputStream outputStream;
 

@@ -1,19 +1,19 @@
 package kamilhalko.com.driveanalyzer.services;
 
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import javax.inject.Inject;
+
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import kamilhalko.com.driveanalyzer.data.DataManager;
-import kamilhalko.com.driveanalyzer.data.DataManagerImpl;
 import kamilhalko.com.driveanalyzer.data.models.Trip;
 
-public class SyncService extends Service {
-    private DataManager dataManager;
+public class SyncService extends BaseService {
+    @Inject DataManager dataManager;
 
     public static void startService(Context context) {
         context.startService(new Intent(context, SyncService.class));
@@ -26,11 +26,11 @@ public class SyncService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        dataManager = DataManagerImpl.getInstance();
+        getServiceComponent().inject(this);
     }
 
     private void synchronize() {
-        dataManager.synchronize(this, new Trip())
+        dataManager.synchronize(new Trip())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Consumer<Long>() {
                     @Override

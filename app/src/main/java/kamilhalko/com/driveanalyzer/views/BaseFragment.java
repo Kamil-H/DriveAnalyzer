@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
+import kamilhalko.com.driveanalyzer.dependency_injection.component.ActivityComponent;
+
 public abstract class BaseFragment extends Fragment implements MvpView {
     private BaseActivity activity;
 
@@ -45,5 +47,12 @@ public abstract class BaseFragment extends Fragment implements MvpView {
         if (activity != null) {
             activity.onError(message, buttonMessage, onClickListener);
         }
+    }
+
+    public ActivityComponent getActivityComponent() {
+        if (activity != null) {
+            return activity.getActivityComponent();
+        }
+        return null;
     }
 }

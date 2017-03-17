@@ -12,9 +12,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import javax.inject.Inject;
+
 import kamilhalko.com.driveanalyzer.R;
 import kamilhalko.com.driveanalyzer.databinding.ActivityMainBinding;
-import kamilhalko.com.driveanalyzer.dependency_injection.Injector;
 import kamilhalko.com.driveanalyzer.presenters.activities.MainPresenter;
 import kamilhalko.com.driveanalyzer.services.DriveAnalyzeService;
 import kamilhalko.com.driveanalyzer.utils.GpsUtils;
@@ -24,7 +25,7 @@ import kamilhalko.com.driveanalyzer.views.fragments.recording.RecordingFragment;
 import kamilhalko.com.driveanalyzer.views.fragments.settings.SettingsFragment;
 
 public class MainActivity extends BaseActivity implements MainView, BottomNavigationView.OnNavigationItemSelectedListener, RecordingFragment.RecordingFragmentCallbacks {
-    private MainPresenter mainPresenter;
+    @Inject MainPresenter<MainView> mainPresenter;
     private ActivityMainBinding binding;
 
     @Override
@@ -36,7 +37,7 @@ public class MainActivity extends BaseActivity implements MainView, BottomNaviga
 
     @Override
     public void setUpView() {
-        mainPresenter = Injector.injectPresenter(this);
+        getActivityComponent().inject(this);
 
         setUpToolbar();
         setUpNavigationBottomView();

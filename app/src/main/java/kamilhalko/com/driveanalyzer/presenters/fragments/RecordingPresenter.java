@@ -1,5 +1,7 @@
 package kamilhalko.com.driveanalyzer.presenters.fragments;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Action;
@@ -11,6 +13,7 @@ import kamilhalko.com.driveanalyzer.views.fragments.recording.RecordingView;
 
 public class RecordingPresenter<V extends RecordingView> extends BasePresenter<V> {
 
+    @Inject
     public RecordingPresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
         super(dataManager, compositeDisposable);
     }

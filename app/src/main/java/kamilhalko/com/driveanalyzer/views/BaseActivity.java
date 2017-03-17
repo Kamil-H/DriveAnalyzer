@@ -4,15 +4,31 @@ import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import kamilhalko.com.driveanalyzer.DriveAnalyzerApp;
 import kamilhalko.com.driveanalyzer.R;
+import kamilhalko.com.driveanalyzer.dependency_injection.component.ActivityComponent;
+import kamilhalko.com.driveanalyzer.dependency_injection.component.DaggerActivityComponent;
+import kamilhalko.com.driveanalyzer.dependency_injection.module.ActivityModule;
 
 public abstract class BaseActivity extends AppCompatActivity implements MvpView {
     private ProgressDialog progressDialog;
+    private ActivityComponent activityComponent;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activityComponent = DaggerActivityComponent.builder()
+                .activityModule(new ActivityModule(this))
+                .applicationComponent(((DriveAnalyzerApp) getApplication()).getApplicationComponent())
+                .build();
+    }
 
     @TargetApi(Build.VERSION_CODES.M)
     protected void requestPermissionsSafely(String[] permissions, int requestCode) {
@@ -67,5 +83,9 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
                 .beginTransaction()
                 .replace(containerId, createFragmentInstance(fragmentClass), fragmentClass.getName())
                 .commitAllowingStateLoss();
+    }
+
+    public ActivityComponent getActivityComponent() {
+        return activityComponent;
     }
 }
