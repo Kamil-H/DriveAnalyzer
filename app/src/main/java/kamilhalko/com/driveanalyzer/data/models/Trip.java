@@ -1,23 +1,26 @@
 package kamilhalko.com.driveanalyzer.data.models;
 
-import org.joda.time.DateTime;
-
 import java.util.List;
 
 public class Trip {
     private long id;
-    private DateTime time;
+    private String time;
     private String deviceId;
     private List<SensorData> sensorDataList;
     private double distance;
     private double avgSpeed;
-    private boolean isSynchronized;
 
-    public DateTime getTime() {
+    public Trip(String time, String deviceId, List<SensorData> sensorDataList) {
+        this.time = time;
+        this.deviceId = deviceId;
+        this.sensorDataList = sensorDataList;
+    }
+
+    public String getTime() {
         return time;
     }
 
-    public void setTime(DateTime time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
@@ -51,14 +54,6 @@ public class Trip {
 
     public void setAvgSpeed(double avgSpeed) {
         this.avgSpeed = avgSpeed;
-    }
-
-    public boolean isSynchronized() {
-        return isSynchronized;
-    }
-
-    public void setSynchronized(boolean aSynchronized) {
-        isSynchronized = aSynchronized;
     }
 
     public long getId() {

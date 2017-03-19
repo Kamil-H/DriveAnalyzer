@@ -24,9 +24,9 @@ public class DriveAnalyzeService extends BaseService implements GpsManager.GpsLo
     @Inject DataManager dataManager;
     @Inject MotionSensorManager motionSensorManager;
     @Inject GpsManager gpsManager;
+    @Inject Trip trip;
 
     private List<SensorData> sensorDataList = new ArrayList<>();
-    private Trip trip;
 
     public static void startService(Context context) {
         context.startService(new Intent(context, DriveAnalyzeService.class));
@@ -46,7 +46,6 @@ public class DriveAnalyzeService extends BaseService implements GpsManager.GpsLo
         getServiceComponent().inject(this);
         configureMotionSensorManager();
         configureGpsManager();
-        trip = new Trip();
         dataManager.getPublishSubject().onNext(trip);
     }
 
@@ -100,7 +99,8 @@ public class DriveAnalyzeService extends BaseService implements GpsManager.GpsLo
     }
 
     private void saveData() {
-
+        dataManager.saveTrip(trip);
+        dataManager.synchronize();
     }
 
     @Nullable

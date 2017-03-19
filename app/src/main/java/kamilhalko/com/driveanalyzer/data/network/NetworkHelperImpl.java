@@ -2,17 +2,17 @@ package kamilhalko.com.driveanalyzer.data.network;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
-
 import java.io.File;
-import java.io.FileOutputStream;
-import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
-import kamilhalko.com.driveanalyzer.data.models.Trip;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import kamilhalko.com.driveanalyzer.data.storage.FileHelper;
+import kamilhalko.com.driveanalyzer.utils.AppConstants;
+import kamilhalko.com.driveanalyzer.utils.NetworkUtils;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -23,53 +23,40 @@ import okhttp3.Response;
 @Singleton
 public class NetworkHelperImpl implements NetworkHelper {
     private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
+    private FileHelper fileHelper;
     private Context context;
 
     @Inject
-    public NetworkHelperImpl(Context context) {
+    public NetworkHelperImpl(Context context, FileHelper fileHelper) {
         this.context = context;
+        this.fileHelper = fileHelper;
     }
 
     @Override
-    public Observable<Long> synchronize(final Trip trip) {
-        return Observable.fromCallable(new Callable<Long>() {
-            @Override
-            public Long call() throws Exception {
-                File file = createFile(trip);
-                OkHttpClient client = new OkHttpClient();
-                RequestBody requestBody = new MultipartBody.Builder()
-                        .setType(MultipartBody.FORM)
-                        .addFormDataPart("file", file.getName(), RequestBody.create(MEDIA_TYPE_JSON, file))
-                        .build();
+    public void synchronize() {
+        if (NetworkUtils.isInternetConection(context)) {
+            Observable.fromIterable(fileHelper.getNotSynchronizedFiles())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(new Consumer<File>() {
+                        @Override
+                        public void accept(File file) throws Exception {
+                            OkHttpClient client = new OkHttpClient();
+                            RequestBody requestBody = new MultipartBody.Builder()
+                                    .setType(MultipartBody.FORM)
+                                    .addFormDataPart("file", file.getName(), RequestBody.create(MEDIA_TYPE_JSON, file))
+                                    .build();
 
-                Request request = new Request.Builder()
-                        .url("http://104.238.177.72:8000/")
-                        .post(requestBody)
-                        .build();
+                            Request request = new Request.Builder()
+                                    .url(AppConstants.SERVER_ADDRESS)
+                                    .post(requestBody)
+                                    .build();
 
-                Response response = client.newCall(request).execute();
-                file.deleteOnExit();
-
-                if (response.isSuccessful()) {
-                    return 10L;
-                } else {
-                    return null;
-                }
-            }
-        });
-    }
-
-    private File createFile(Trip trip) {
-        File file = new File(context.getFilesDir(), String.format("%s_%s.json", trip.getDeviceId(), trip.getTime().toDateTimeISO()));
-        FileOutputStream outputStream;
-
-        try {
-            outputStream = new FileOutputStream(file);
-            outputStream.write(new Gson().toJson(trip).getBytes());
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+                            Response response = client.newCall(request).execute();
+                            if (response.isSuccessful()) {
+                                file.deleteOnExit();
+                            }
+                        }
+                    });
         }
-        return file;
     }
 }

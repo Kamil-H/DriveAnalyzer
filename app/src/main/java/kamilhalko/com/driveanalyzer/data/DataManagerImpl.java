@@ -1,29 +1,27 @@
 package kamilhalko.com.driveanalyzer.data;
 
-import android.content.Context;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
-import kamilhalko.com.driveanalyzer.data.database.DbHelper;
 import kamilhalko.com.driveanalyzer.data.models.Trip;
 import kamilhalko.com.driveanalyzer.data.network.NetworkHelper;
+import kamilhalko.com.driveanalyzer.data.storage.StorageHelper;
 
 @Singleton
 public class DataManagerImpl implements DataManager {
     private PublishSubject<Trip> publishSubject = PublishSubject.create();
     private Trip trip;
 
-    private final Context context;
-    private final DbHelper dbHelper;
+    private final StorageHelper storageHelper;
     private final NetworkHelper networkHelper;
 
     @Inject
-    public DataManagerImpl(Context context, DbHelper dbHelper, NetworkHelper networkHelper) {
-        this.context = context;
-        this.dbHelper = dbHelper;
+    public DataManagerImpl(StorageHelper storageHelper, NetworkHelper networkHelper) {
+        this.storageHelper = storageHelper;
         this.networkHelper = networkHelper;
     }
 
@@ -48,7 +46,17 @@ public class DataManagerImpl implements DataManager {
     }
 
     @Override
-    public Observable<Long> synchronize(Trip trip) {
-        return networkHelper.synchronize(trip);
+    public void synchronize() {
+        networkHelper.synchronize();
+    }
+
+    @Override
+    public Observable<List<Trip>> getTrips() {
+        return storageHelper.getTrips();
+    }
+
+    @Override
+    public void saveTrip(Trip trip) {
+        storageHelper.saveTrip(trip);
     }
 }
