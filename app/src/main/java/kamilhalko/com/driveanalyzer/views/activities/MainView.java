@@ -8,4 +8,8 @@ public interface MainView extends MvpView {
     void setUpNavigationBottomView();
     void startDriveAnalyzeService();
     boolean isGpsEnabled();
+    boolean isBluetoothEnabled();
+    void askForObd();
+    void startService();
+    void enableBluetooth();
 }

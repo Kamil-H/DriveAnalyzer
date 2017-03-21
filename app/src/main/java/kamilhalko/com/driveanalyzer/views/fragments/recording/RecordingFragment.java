@@ -72,7 +72,7 @@ public class RecordingFragment extends BaseFragment implements RecordingView {
         binding.startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callback.startService();
+                callback.onStartClicked();
                 recordingPresenter.onStartRecording();
             }
         });
@@ -80,7 +80,7 @@ public class RecordingFragment extends BaseFragment implements RecordingView {
         binding.recordingLayout.stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callback.stopService();
+                callback.onStopClicked();
             }
         });
     }
@@ -171,7 +171,7 @@ public class RecordingFragment extends BaseFragment implements RecordingView {
     }
 
     public interface RecordingFragmentCallbacks {
-        void startService();
-        void stopService();
+        void onStartClicked();
+        void onStopClicked();
     }
 }
