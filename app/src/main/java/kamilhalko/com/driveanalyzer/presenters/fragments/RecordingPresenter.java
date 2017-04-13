@@ -32,7 +32,7 @@ public class RecordingPresenter<V extends RecordingView> extends BasePresenter<V
                 .subscribe(new Consumer<Trip>() {
                     @Override
                     public void accept(Trip trip) throws Exception {
-                        if (trip.getSensorDataList() != null) {
+                        if (trip != null) {
                             getMvpView().updateData(trip);
                         }
                     }

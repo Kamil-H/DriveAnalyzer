@@ -5,12 +5,14 @@ public abstract class Sensor {
     protected float y;
     protected float z;
     protected float acceleration;
+    protected long time;
 
-    protected Sensor(float x, float y, float z) {
+    protected Sensor(float x, float y, float z, long time) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.acceleration = (float) Math.sqrt(x*x + y*y + z*z);
+        this.time = time;
     }
 
     public float getX() {
@@ -43,5 +45,13 @@ public abstract class Sensor {
 
     public void setAcceleration(float acceleration) {
         this.acceleration = acceleration;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }

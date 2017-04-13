@@ -4,10 +4,19 @@
     <string name="bottom_history">History</string>
     <string name="bottom_settings">Settings</string>
     <string name="RecordingFragment_start_button">Click and start analyze</string>
-    <string name="RecordingFragment_stop_button">click and stop analyze</string>
+    <string name="RecordingFragment_stop_button">stop</string>
     <string name="RecordingFragment_gps_disabled">GPS has been disabled</string>
     <string name="MainActivity_gps_permission_needed">Application needs GPS to work</string>
     <string name="MainActivity_allow">allow</string>
     <string name="MainActivity_gps_needed">Application needs GPS to work</string>
     <string name="MainActivity_enable">enable</string>
+    <string name="RecordingLayout_time">time</string>
+    <string name="RecordingLayout_distance">distance</string>
+    <string name="RecordingLayout_actual_speed">actual speed</string>
+    <string name="RecordingLayout_avg_speed">avg speed</string>
+    <string name="RecordingLayout_gyroscope">gyroscope</string>
+    <string name="RecordingLayout_accelerometer">accelerometer</string>
+    <string name="RecordingLayout_magnetometer">magnetometer</string>
+    <string name="RecordingLayout_summary">summary</string>
+    <string name="RecordingLayout_sensor_data">sensor data</string>
 </resources>

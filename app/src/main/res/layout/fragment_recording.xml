@@ -31,15 +31,11 @@
             android:id="@+id/recordingLinearLayout"
             android:visibility="gone">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/RecordingFragment_stop_button"
-                android:textSize="18sp"
-                android:textColor="@color/orange"
-                android:layout_gravity="center_horizontal"
-                android:id="@+id/stopButton"
-                style="?android:attr/borderlessButtonStyle"/>
+            <include
+                layout="@layout/layout_recording"
+                android:id="@+id/recordingLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
         </LinearLayout>
     </RelativeLayout>
 </layout>

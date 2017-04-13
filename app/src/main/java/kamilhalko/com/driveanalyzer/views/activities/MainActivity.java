@@ -38,9 +38,15 @@ public class MainActivity extends BaseActivity implements MainView, BottomNaviga
     @Override
     public void setUpView() {
         getActivityComponent().inject(this);
-
+        mainPresenter.onAttach(this);
         setUpToolbar();
         setUpNavigationBottomView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mainPresenter.onDetach();
     }
 
     @Override

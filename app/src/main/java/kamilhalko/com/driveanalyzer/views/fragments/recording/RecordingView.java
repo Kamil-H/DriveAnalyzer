@@ -10,4 +10,6 @@ public interface RecordingView extends MvpView {
     void showRecordingLayout();
     void setUpButtons();
     void setUpView();
+    void startTimer(final long startTime);
+    void stopTimer();
 }

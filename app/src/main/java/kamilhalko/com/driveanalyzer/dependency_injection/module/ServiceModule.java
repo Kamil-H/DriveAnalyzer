@@ -11,11 +11,16 @@ import java.util.ArrayList;
 
 import dagger.Module;
 import dagger.Provides;
-import kamilhalko.com.driveanalyzer.data.models.SensorData;
 import kamilhalko.com.driveanalyzer.data.models.Trip;
+import kamilhalko.com.driveanalyzer.data.models.sensors.Accelerometer;
+import kamilhalko.com.driveanalyzer.data.models.sensors.Gps;
+import kamilhalko.com.driveanalyzer.data.models.sensors.Gyroscope;
+import kamilhalko.com.driveanalyzer.data.models.sensors.MagneticField;
+import kamilhalko.com.driveanalyzer.data.models.sensors.Obd;
 import kamilhalko.com.driveanalyzer.managers.GpsManager;
 import kamilhalko.com.driveanalyzer.managers.MotionSensorManager;
 import kamilhalko.com.driveanalyzer.utils.AppConstants;
+import kamilhalko.com.driveanalyzer.utils.DateUtils;
 
 @Module
 public class ServiceModule {
@@ -38,6 +43,15 @@ public class ServiceModule {
 
     @Provides
     Trip provideTrip() {
-        return new Trip(DateTime.now().toDateTimeISO().toString(), AppConstants.getDeviceId(service), new ArrayList<SensorData>());
+        return new Trip.Builder()
+                .setTime(DateTime.now().toDateTimeISO().toString())
+                .setDeviceId(AppConstants.getDeviceId(service))
+                .setGpsList(new ArrayList<Gps>())
+                .setObdList(new ArrayList<Obd>())
+                .setMagneticFieldList(new ArrayList<MagneticField>())
+                .setGyroscopeList(new ArrayList<Gyroscope>())
+                .setAccelerometerList(new ArrayList<Accelerometer>())
+                .setMillis(DateUtils.now())
+                .createTrip();
     }
 }

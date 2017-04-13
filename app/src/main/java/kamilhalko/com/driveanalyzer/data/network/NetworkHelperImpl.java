@@ -34,29 +34,32 @@ public class NetworkHelperImpl implements NetworkHelper {
 
     @Override
     public void synchronize() {
-        if (NetworkUtils.isInternetConection(context)) {
-            Observable.fromIterable(fileHelper.getNotSynchronizedFiles())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(new Consumer<File>() {
-                        @Override
-                        public void accept(File file) throws Exception {
-                            OkHttpClient client = new OkHttpClient();
-                            RequestBody requestBody = new MultipartBody.Builder()
-                                    .setType(MultipartBody.FORM)
-                                    .addFormDataPart("file", file.getName(), RequestBody.create(MEDIA_TYPE_JSON, file))
-                                    .build();
-
-                            Request request = new Request.Builder()
-                                    .url(AppConstants.SERVER_ADDRESS)
-                                    .post(requestBody)
-                                    .build();
-
-                            Response response = client.newCall(request).execute();
-                            if (response.isSuccessful()) {
-                                file.deleteOnExit();
-                            }
-                        }
-                    });
+        if (!NetworkUtils.isInternetConection(context)) {
+            return;
         }
+        Observable.fromIterable(fileHelper.getNotSynchronizedFiles())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Consumer<File>() {
+                    @Override
+                    public void accept(File file) throws Exception {
+                        OkHttpClient client = new OkHttpClient.Builder()
+                                .build();
+
+                        RequestBody requestBody = new MultipartBody.Builder()
+                                .setType(MultipartBody.FORM)
+                                .addFormDataPart("file", file.getName(), RequestBody.create(MEDIA_TYPE_JSON, file))
+                                .build();
+
+                        Request request = new Request.Builder()
+                                .url(AppConstants.SERVER_ADDRESS)
+                                .post(requestBody)
+                                .build();
+
+                        Response response = client.newCall(request).execute();
+                        if (response.isSuccessful()) {
+                            file.deleteOnExit();
+                        }
+                    }
+                });
     }
 }

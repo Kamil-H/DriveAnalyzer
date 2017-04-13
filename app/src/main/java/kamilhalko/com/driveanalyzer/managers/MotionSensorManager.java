@@ -8,12 +8,11 @@ import android.hardware.SensorManager;
 import kamilhalko.com.driveanalyzer.data.models.sensors.Accelerometer;
 import kamilhalko.com.driveanalyzer.data.models.sensors.Gyroscope;
 import kamilhalko.com.driveanalyzer.data.models.sensors.MagneticField;
+import kamilhalko.com.driveanalyzer.utils.DateUtils;
 
 public class MotionSensorManager implements SensorEventListener {
     private SensorManager sensorManager;
-    private Accelerometer accelerometer;
-    private Gyroscope gyroscope;
-    private MagneticField magneticField;
+    private SensorValueFetched sensorValueFetched;
 
     public MotionSensorManager(SensorManager sensorManager) {
         this.sensorManager = sensorManager;
@@ -45,11 +44,11 @@ public class MotionSensorManager implements SensorEventListener {
         float z = values[2];
 
         if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            accelerometer = new Accelerometer(x, y, z);
+            sensorValueFetched.onAccelerometer(new Accelerometer(x, y, z, DateUtils.now()));
         } else if (sensorEvent.sensor.getType() == Sensor.TYPE_GYROSCOPE){
-            gyroscope = new Gyroscope(x, y, z);
+            sensorValueFetched.onGyroscope(new Gyroscope(x, y, z, DateUtils.now()));
         } else if (sensorEvent.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD){
-            magneticField = new MagneticField(x, y, z);
+            sensorValueFetched.onMagneticField(new MagneticField(x, y, z, DateUtils.now()));
         }
     }
 
@@ -60,15 +59,15 @@ public class MotionSensorManager implements SensorEventListener {
         sensorManager.unregisterListener(this);
     }
 
-    public Accelerometer getAccelerometer() {
-        return accelerometer;
+    public void setSensorValueFetched(SensorValueFetched sensorValueFetched) {
+        if (sensorValueFetched != null) {
+            this.sensorValueFetched = sensorValueFetched;
+        }
     }
 
-    public Gyroscope getGyroscope() {
-        return gyroscope;
-    }
-
-    public MagneticField getMagneticField() {
-        return magneticField;
+    public interface SensorValueFetched {
+        void onAccelerometer(Accelerometer accelerometer);
+        void onGyroscope(Gyroscope gyroscope);
+        void onMagneticField(MagneticField magneticField);
     }
 }

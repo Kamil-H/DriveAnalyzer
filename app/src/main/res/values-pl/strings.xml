@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Drive Analyzer</string>
+    <string name="MainActivity_allow">pozwól</string>
+    <string name="MainActivity_enable">włącz</string>
+    <string name="MainActivity_gps_needed">Aplikacja wymaga GPSa do działania</string>
+    <string name="MainActivity_gps_permission_needed">Aplikacja wymaga GPSa do działania</string>
+    <string name="RecordingFragment_gps_disabled">GPS został wyłączony</string>
+    <string name="RecordingFragment_start_button">rozpocznij nagrywanie</string>
+    <string name="RecordingFragment_stop_button">zakończ nagrywanie</string>
+    <string name="RecordingLayout_accelerometer">akcelerometr</string>
+    <string name="RecordingLayout_actual_speed">prędkość</string>
+    <string name="RecordingLayout_avg_speed">średnia prędkość</string>
+    <string name="RecordingLayout_distance">dystans</string>
+    <string name="RecordingLayout_gyroscope">żyroskop</string>
+    <string name="RecordingLayout_magnetometer">magnetometr</string>
+    <string name="RecordingLayout_time">czas</string>
+    <string name="bottom_history">Historia</string>
+    <string name="bottom_recording">Nagrywanie</string>
+    <string name="bottom_settings">Ustawienia</string>
+    <string name="RecordingLayout_sensor_data">dane z sensorów</string>
+    <string name="RecordingLayout_summary">podsumowanie</string>
+</resources>

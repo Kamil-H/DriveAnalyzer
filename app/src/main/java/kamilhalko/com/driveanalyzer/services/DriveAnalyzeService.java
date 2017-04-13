@@ -13,20 +13,27 @@ import javax.inject.Inject;
 
 import io.reactivex.subjects.PublishSubject;
 import kamilhalko.com.driveanalyzer.data.DataManager;
-import kamilhalko.com.driveanalyzer.data.models.SensorData;
 import kamilhalko.com.driveanalyzer.data.models.Trip;
+import kamilhalko.com.driveanalyzer.data.models.sensors.Accelerometer;
 import kamilhalko.com.driveanalyzer.data.models.sensors.Gps;
+import kamilhalko.com.driveanalyzer.data.models.sensors.Gyroscope;
+import kamilhalko.com.driveanalyzer.data.models.sensors.MagneticField;
+import kamilhalko.com.driveanalyzer.data.models.sensors.Obd;
 import kamilhalko.com.driveanalyzer.managers.GpsManager;
 import kamilhalko.com.driveanalyzer.managers.MotionSensorManager;
 import kamilhalko.com.driveanalyzer.utils.ServiceUtil;
 
-public class DriveAnalyzeService extends BaseService implements GpsManager.GpsLocationListener {
+public class DriveAnalyzeService extends BaseService implements GpsManager.GpsLocationListener, MotionSensorManager.SensorValueFetched {
     @Inject DataManager dataManager;
     @Inject MotionSensorManager motionSensorManager;
     @Inject GpsManager gpsManager;
     @Inject Trip trip;
 
-    private List<SensorData> sensorDataList = new ArrayList<>();
+    private List<Gps> gpsList = new ArrayList<>();
+    private List<Obd> obdList = new ArrayList<>();
+    private List<Accelerometer> accelerometerList = new ArrayList<>();
+    private List<MagneticField> magneticFieldList = new ArrayList<>();
+    private List<Gyroscope> gyroscopeList = new ArrayList<>();
 
     public static void startService(Context context) {
         context.startService(new Intent(context, DriveAnalyzeService.class));
@@ -60,6 +67,7 @@ public class DriveAnalyzeService extends BaseService implements GpsManager.GpsLo
                 .addUpdatesForGyroscopeSensor()
                 .addUpdatesForMagneticFieldSensor()
                 .addUpdatesForAccelerometerSensor();
+        motionSensorManager.setSensorValueFetched(this);
     }
 
     private void configureGpsManager() {
@@ -69,14 +77,29 @@ public class DriveAnalyzeService extends BaseService implements GpsManager.GpsLo
 
     @Override
     public void onLocationChanged(Location location) {
-        SensorData sensorData = new SensorData.Builder()
-                .setAccelerometer(motionSensorManager.getAccelerometer())
-                .setGyroscope(motionSensorManager.getGyroscope())
-                .setMagneticField(motionSensorManager.getMagneticField())
-                .setGps(new Gps(location))
-                .build();
-        sensorDataList.add(sensorData);
-        trip.setSensorDataList(sensorDataList);
+        gpsList.add(new Gps(location));
+        trip.setGpsList(gpsList);
+        notifyData(trip);
+    }
+
+    @Override
+    public void onAccelerometer(Accelerometer accelerometer) {
+        accelerometerList.add(accelerometer);
+        trip.setAccelerometerList(accelerometerList);
+        notifyData(trip);
+    }
+
+    @Override
+    public void onGyroscope(Gyroscope gyroscope) {
+        gyroscopeList.add(gyroscope);
+        trip.setGyroscopeList(gyroscopeList);
+        notifyData(trip);
+    }
+
+    @Override
+    public void onMagneticField(MagneticField magneticField) {
+        magneticFieldList.add(magneticField);
+        trip.setMagneticFieldList(magneticFieldList);
         notifyData(trip);
     }
 

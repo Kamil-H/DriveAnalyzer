@@ -10,4 +10,11 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
+
+    <style name="TitleTextView" parent="AppTheme">
+        <item name="android:textColor">@color/darkPink</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Small</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
 </resources>

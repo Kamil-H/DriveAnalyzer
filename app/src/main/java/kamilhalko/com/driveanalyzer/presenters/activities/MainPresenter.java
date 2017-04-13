@@ -13,4 +13,10 @@ public class MainPresenter<V extends MainView> extends BasePresenter<V> {
     public MainPresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
         super(dataManager, compositeDisposable);
     }
+
+    @Override
+    public void onAttach(V mvpView) {
+        super.onAttach(mvpView);
+        getDataManager().synchronize();
+    }
 }
