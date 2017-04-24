@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
+import kamilhalko.com.driveanalyzer.data.models.GearData;
 import kamilhalko.com.driveanalyzer.data.models.Trip;
 
 @Singleton
@@ -29,7 +30,12 @@ public class StorageHelperImpl implements StorageHelper {
     }
 
     @Override
-    public void saveTrip(Trip trip) {
-        fileHelper.saveTrip(trip);
+    public void save(Trip trip) {
+        fileHelper.save(trip);
+    }
+
+    @Override
+    public void save(GearData gearData) {
+        fileHelper.save(gearData);
     }
 }

@@ -16,11 +16,14 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import kamilhalko.com.driveanalyzer.data.models.GearData;
 import kamilhalko.com.driveanalyzer.data.models.Trip;
+import kamilhalko.com.driveanalyzer.utils.AppConstants;
 
 @Singleton
 public class FileHelper {
     private static String fileExtension = ".json";
+    private static String directoryGearName = "gears";
     private static String directoryTripsName = "trips";
     private static String directorySyncName = "sync";
     private Context context;
@@ -40,16 +43,24 @@ public class FileHelper {
         return context.getDir(directorySyncName, Context.MODE_PRIVATE);
     }
 
-    public void saveTrip(Trip trip) {
-        trip.setId(getNumberOfFiles() + 1);
-        writeTripToFile(trip);
+    private File createOrOpenGearDir() {
+        return context.getDir(directoryGearName, Context.MODE_PRIVATE);
     }
 
-    private void writeTripToFile(Trip trip) {
-        String fileName = getName(trip);
-        String fileContent = gson.toJson(trip);
+    public void save(Trip trip) {
+        trip.setId(getNumberOfTrips() + 1);
+        writeToFile(trip, getTripFileName(trip), createOrOpenTripsDir());
+    }
 
-        File saveFile = new File(createOrOpenTripsDir(), fileName);
+    public void save(GearData gearData) {
+        gearData.setId(getNumberOfGearData() + 1);
+        writeToFile(gearData, getGearFileName(gearData), createOrOpenGearDir());
+    }
+
+    private void writeToFile(Object object, String fileName, File destinationDirectory) {
+        String fileContent = gson.toJson(object);
+
+        File saveFile = new File(destinationDirectory, fileName);
         File syncFile = new File(createOrOpenSyncDir(), fileName);
 
         FileOutputStream saveStream;
@@ -116,11 +127,19 @@ public class FileHelper {
         return sb.toString();
     }
 
-    private String getName(Trip trip) {
+    private String getTripFileName(Trip trip) {
         return trip.getDeviceId() + "_" + trip.getTime() + "_" + trip.getId() + fileExtension;
     }
 
-    private long getNumberOfFiles() {
+    private String getGearFileName(GearData gearData) {
+        return "gear_" + AppConstants.getDeviceId(context) + "_" + gearData.getId() + fileExtension;
+    }
+
+    private long getNumberOfTrips() {
         return createOrOpenTripsDir().listFiles().length;
+    }
+
+    private long getNumberOfGearData() {
+        return createOrOpenGearDir().listFiles().length;
     }
 }

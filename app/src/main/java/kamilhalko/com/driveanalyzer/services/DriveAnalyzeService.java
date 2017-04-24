@@ -122,7 +122,7 @@ public class DriveAnalyzeService extends BaseService implements GpsManager.GpsLo
     }
 
     private void saveData() {
-        dataManager.saveTrip(trip);
+        dataManager.save(trip);
         dataManager.synchronize();
     }
 

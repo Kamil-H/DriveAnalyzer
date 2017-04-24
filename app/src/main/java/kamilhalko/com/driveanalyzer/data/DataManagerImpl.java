@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
+import kamilhalko.com.driveanalyzer.data.models.GearData;
 import kamilhalko.com.driveanalyzer.data.models.Trip;
 import kamilhalko.com.driveanalyzer.data.network.NetworkHelper;
 import kamilhalko.com.driveanalyzer.data.storage.StorageHelper;
@@ -56,7 +57,12 @@ public class DataManagerImpl implements DataManager {
     }
 
     @Override
-    public void saveTrip(Trip trip) {
-        storageHelper.saveTrip(trip);
+    public void save(Trip trip) {
+        storageHelper.save(trip);
+    }
+
+    @Override
+    public void save(GearData gearData) {
+        storageHelper.save(gearData);
     }
 }

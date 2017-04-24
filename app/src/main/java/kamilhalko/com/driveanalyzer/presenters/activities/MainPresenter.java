@@ -17,6 +17,6 @@ public class MainPresenter<V extends MainView> extends BasePresenter<V> {
     @Override
     public void onAttach(V mvpView) {
         super.onAttach(mvpView);
-        getDataManager().synchronize();
+        //getDataManager().synchronize();
     }
 }

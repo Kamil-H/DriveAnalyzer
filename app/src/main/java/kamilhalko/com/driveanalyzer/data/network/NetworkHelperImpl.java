@@ -57,7 +57,7 @@ public class NetworkHelperImpl implements NetworkHelper {
 
                         Response response = client.newCall(request).execute();
                         if (response.isSuccessful()) {
-                            file.deleteOnExit();
+                            file.delete();
                         }
                     }
                 });

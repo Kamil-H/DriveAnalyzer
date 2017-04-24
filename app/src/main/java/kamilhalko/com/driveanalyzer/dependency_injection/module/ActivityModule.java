@@ -8,8 +8,10 @@ import io.reactivex.disposables.CompositeDisposable;
 import kamilhalko.com.driveanalyzer.data.DataManager;
 import kamilhalko.com.driveanalyzer.dependency_injection.PerActivity;
 import kamilhalko.com.driveanalyzer.presenters.activities.MainPresenter;
+import kamilhalko.com.driveanalyzer.presenters.fragments.GearPresenter;
 import kamilhalko.com.driveanalyzer.presenters.fragments.RecordingPresenter;
 import kamilhalko.com.driveanalyzer.views.activities.MainView;
+import kamilhalko.com.driveanalyzer.views.fragments.gear.GearView;
 import kamilhalko.com.driveanalyzer.views.fragments.recording.RecordingView;
 
 @Module
@@ -36,5 +38,11 @@ public class ActivityModule {
     @PerActivity
     RecordingPresenter<RecordingView> provideRecordingPresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
         return new RecordingPresenter<>(dataManager, compositeDisposable);
+    }
+
+    @Provides
+    @PerActivity
+    GearPresenter<GearView> provideGearPresenter(DataManager dataManager, CompositeDisposable compositeDisposable) {
+        return new GearPresenter<>(dataManager, compositeDisposable);
     }
 }

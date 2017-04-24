@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_weight="0.33"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="1"
+                android:id="@+id/button1"
+                style="?android:attr/borderlessButtonStyle"
+                android:clickable="true"
+                android:textSize="40sp" />
+
+            <Button
+                android:layout_weight="0.33"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="2"
+                android:id="@+id/button2"
+                style="?android:attr/borderlessButtonStyle"
+                android:clickable="true"
+                android:textSize="40sp" />
+
+            <Button
+                android:layout_weight="0.33"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="3"
+                android:id="@+id/button3"
+                style="?android:attr/borderlessButtonStyle"
+                android:clickable="true"
+                android:textSize="40sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_weight="0.33"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="4"
+                android:id="@+id/button4"
+                style="?android:attr/borderlessButtonStyle"
+                android:clickable="true"
+                android:textSize="40sp" />
+
+            <Button
+                android:layout_weight="0.33"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="5"
+                android:id="@+id/button5"
+                style="?android:attr/borderlessButtonStyle"
+                android:clickable="true"
+                android:textSize="40sp" />
+
+            <Button
+                android:layout_weight="0.33"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="R"
+                android:id="@+id/buttonR"
+                style="?android:attr/borderlessButtonStyle"
+                android:clickable="true"
+                android:textSize="40sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:text="@string/GearLayout_idle"
+            android:id="@+id/buttonI"
+            style="?android:attr/borderlessButtonStyle"
+            android:clickable="true"
+            android:textSize="40sp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:layout_marginTop="8dp"
+            android:text="@string/GearLayout_stop_button"
+            android:textColor="@color/darkPink"
+            android:textStyle="bold"
+            android:id="@+id/stopButton"/>
+    </LinearLayout>
+</layout>

@@ -19,4 +19,18 @@
     <string name="RecordingLayout_magnetometer">magnetometer</string>
     <string name="RecordingLayout_summary">summary</string>
     <string name="RecordingLayout_sensor_data">sensor data</string>
+    <string name="BluetoothConnector_choose_device">Choose Bluetooth device</string>
+    <string name="BluetoothConnector_device_not_in_range">Device not in range.</string>
+    <string name="BluetoothConnector_not_obd_device">Connected device is not OBD-II device.</string>
+    <string name="MainActivity_bluetooth_enabled">Bluetooth is already enabled</string>
+    <string name="MainActivity_obd_ii">OBD-II</string>
+    <string name="MainActivity_obd_question">Do you want to use OBD-II system?</string>
+    <string name="MainAcitvity_yes">YES</string>
+    <string name="MainActivity_no">NO</string>
+    <string name="GearFragment_start">start gear analyze</string>
+    <string name="GearLayout_idle">idle</string>
+    <string name="GearLayout_stop_button">stop</string>
+    <string name="BluetoothConnector_bluetooth_disabled">Bluetooth is disabled</string>
+    <string name="GearFragment_saved">Value saved</string>
+    <string name="GearFragment_undo">undo</string>
 </resources>

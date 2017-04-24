@@ -2,8 +2,6 @@ package kamilhalko.com.driveanalyzer.views.activities;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
@@ -11,32 +9,28 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-import com.google.gson.Gson;
-
-import java.util.Set;
 
 import javax.inject.Inject;
 
 import kamilhalko.com.driveanalyzer.R;
 import kamilhalko.com.driveanalyzer.databinding.ActivityMainBinding;
 import kamilhalko.com.driveanalyzer.presenters.activities.MainPresenter;
+import kamilhalko.com.driveanalyzer.services.BluetoothConnector;
 import kamilhalko.com.driveanalyzer.services.DriveAnalyzeService;
 import kamilhalko.com.driveanalyzer.utils.GpsUtils;
 import kamilhalko.com.driveanalyzer.views.BaseActivity;
-import kamilhalko.com.driveanalyzer.views.fragments.history.HistoryFragment;
+import kamilhalko.com.driveanalyzer.views.fragments.gear.GearFragment;
 import kamilhalko.com.driveanalyzer.views.fragments.recording.RecordingFragment;
 import kamilhalko.com.driveanalyzer.views.fragments.settings.SettingsFragment;
 
-public class MainActivity extends BaseActivity implements MainView, BottomNavigationView.OnNavigationItemSelectedListener, RecordingFragment.RecordingFragmentCallbacks {
+public class MainActivity extends BaseActivity implements MainView, BottomNavigationView.OnNavigationItemSelectedListener,
+        RecordingFragment.RecordingFragmentCallbacks {
     @Inject MainPresenter<MainView> mainPresenter;
     private ActivityMainBinding binding;
-    private int REQUEST_ENABLE_BT = 0;
+    private static final int REQUEST_ENABLE_BT = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +73,7 @@ public class MainActivity extends BaseActivity implements MainView, BottomNaviga
                 break;
 
             case R.id.bottom_history:
-                displayFragment(HistoryFragment.class, R.id.container);
+                displayFragment(GearFragment.class, R.id.container);
                 break;
 
             case R.id.bottom_settings:
@@ -110,11 +104,7 @@ public class MainActivity extends BaseActivity implements MainView, BottomNaviga
 
     @Override
     public void onStartClicked() {
-        if (isBluetoothEnabled()) {
-            askForObd();
-        } else {
             startService();
-        }
     }
 
     @Override
@@ -176,38 +166,12 @@ public class MainActivity extends BaseActivity implements MainView, BottomNaviga
     }
 
     @Override
-    public boolean isBluetoothEnabled() {
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        return bluetoothAdapter != null && bluetoothAdapter.isEnabled();
-    }
-
-    @Override
     public void enableBluetooth() {
-        if (!isBluetoothEnabled()) {
+        if (!BluetoothConnector.isBluetoothEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
-            onError("Bluetooth is already enabled");
+            onError(getString(R.string.MainActivity_bluetooth_enabled));
         }
-    }
-
-    @Override
-    public void askForObd() {
-        new AlertDialog.Builder(this)
-                .setTitle("OBD-II")
-                .setMessage("Do you want to use OBD-II system?")
-                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                })
-                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        startService();
-                    }
-                })
-                .show();
     }
 }
